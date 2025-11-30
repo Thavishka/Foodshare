@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Requests</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        h2 {
+            margin-bottom: 25px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+        }
+        .badge-low {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .badge-claimed {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Food Requests</h2>
+
+    <table class="table table-bordered table-hover bg-white shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Food Item</th>
+                <th>Receiver</th>
+                <th>Servings Requested</th>
+                <th>Available Quantity</th>
+                <th>Pickup Time</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if requests %}
+                {% for r in requests %}
+                <tr>
+                    <td>{{ r.food.name }}</td>
+                    <td>{{ r.receiver.username }}</td>
+                    <td>{{ r.servings }}</td>
+                    <td>
+                        {{ r.food.quantity }}
+                        {% if r.food.quantity == 0 %}
+                            <span class="badge badge-claimed">Claimed</span>
+                        {% elif r.food.quantity < 5 %}
+                            <span class="badge badge-low">Low</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ r.pickup_time }}</td>
+                    <td>{{ r.message|default:"—" }}</td>
+                    <td>
+                        {% if r.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% elif r.status == 'accepted' %}
+                            <span class="badge bg-success">Accepted</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if r.status == 'pending' %}
+                            {% if r.servings <= r.food.quantity %}
+                                <a href="{% url 'accept_request' r.id %}" class="btn btn-success btn-sm mb-1">Accept</a>
+                            {% else %}
+                                <button class="btn btn-secondary btn-sm mb-1" disabled>Insufficient Qty</button>
+                            {% endif %}
+                            <a href="{% url 'reject_request' r.id %}" class="btn btn-danger btn-sm mb-1">Reject</a>
+                        {% else %}
+                            — 
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8" class="text-center">No food requests yet.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

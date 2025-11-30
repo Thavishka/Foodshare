@@ -1,0 +1,151 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ food.name }} - FoodShare{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Food Images -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <img src="{% if food.image %}{{ food.image.url }}{% else %}https://via.placeholder.com/500x400?text=No+Image{% endif %}" 
+                     class="card-img-top main-img" alt="{{ food.name }}" style="height: 400px; object-fit: cover;">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- For now, use main image as thumbnails -->
+                        {% for i in "123"|make_list %}
+                        <div class="col-4">
+                            <img src="{% if food.image %}{{ food.image.url }}{% else %}https://via.placeholder.com/150?text=No+Image{% endif %}" 
+                                 class="img-thumbnail thumb-img" alt="{{ food.name }} thumbnail {{ forloop.counter }}" style="height: 80px; width: 100%; object-fit: cover;">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Details -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <span class="badge {% if food.status == 'available' %}bg-success{% else %}bg-secondary{% endif %} mb-3">{{ food.status|title }}</span>
+                    <h1 class="card-title h2">{{ food.name }}</h1>
+                    <p class="text-muted">{{ food.description }}</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-success">{{ food.quantity }} servings available</h4>
+                        <p class="text-muted">Expires at {{ food.expiry_time|date:"M d, H:i" }}</p>
+                    </div>
+
+                    <!-- Food Information -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <p><strong><i class="fas fa-utensils me-2 text-primary"></i>Food Type:</strong><br>{{ food.food_type|title }}</p>
+                            <p><strong><i class="fas fa-map-marker-alt me-2 text-primary"></i>Location:</strong><br>{{ food.location }}</p>
+                        </div>
+                        <div class="col-6">
+                            <p><strong><i class="fas fa-user me-2 text-primary"></i>Donor:</strong><br>{{ food.donor.username }}</p>
+                            {% if food.donor.profile.contact_number %}
+                            <p><strong><i class="fas fa-phone me-2 text-primary"></i>Contact:</strong><br>{{ food.donor.profile.contact_number }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Request Form -->
+                    {% if user.is_authenticated %}
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title">Request This Food</h5>
+                            <form method="POST" action="{% url 'request_food' food.id %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="servings" class="form-label">Number of Servings</label>
+                                    <input type="number" class="form-control" id="servings" name="servings" min="1" max="{{ food.quantity }}" value="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pickupTime" class="form-label">Preferred Pickup Time</label>
+                                    <input type="datetime-local" class="form-control" id="pickupTime" name="pickup_time">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Message to Donor (Optional)</label>
+                                    <textarea class="form-control" id="message" name="message" rows="3" placeholder="Your message..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                    <i class="fas fa-hand-holding-heart me-2"></i>Request Food
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Login Required</h6>
+                        <p class="mb-0">Please <a href="{% url 'login' %}" class="alert-link">login</a> or <a href="{% url 'register' %}" class="alert-link">register</a> to request this food donation.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar Food Items -->
+    {% if similar_foods %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="section-title">Similar Food Items</h4>
+            <div class="row">
+                {% for item in similar_foods %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <img src="{% if item.image %}{{ item.image.url }}{% else %}https://via.placeholder.com/500x150?text=No+Image{% endif %}" 
+                             class="card-img-top" alt="{{ item.name }}" style="height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ item.name }}</h6>
+                            <p class="card-text small">{{ item.quantity }} servings available</p>
+                            <a href="{% url 'food_detail' item.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .img-thumbnail {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .img-thumbnail:hover {
+        transform: scale(1.05);
+        border-color: #28a745;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Image thumbnail click functionality
+        const thumbnails = document.querySelectorAll('.thumb-img');
+        const mainImage = document.querySelector('.main-img');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const tempSrc = mainImage.src;
+                mainImage.src = this.src;
+                this.src = tempSrc;
+            });
+        });
+
+        // Auto-set pickup time to current time + 1 hour
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        const localDateTime = now.toISOString().slice(0, 16);
+        const pickupInput = document.getElementById('pickupTime');
+        if(pickupInput){
+            pickupInput.value = localDateTime;
+        }
+    });
+</script>
+{% endblock %}

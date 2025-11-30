@@ -1,0 +1,140 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Donate Food - FoodShare{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="section-title">Donate Food</h1>
+                <p class="lead">Help reduce food waste by sharing surplus food with those in need.</p>
+            </div>
+
+            <!-- Donation Form -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0"><i class="fas fa-utensils me-2"></i>Food Donation Details</h4>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Food Name *</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Food Type *</label>
+                                <select class="form-select" name="food_type" required>
+                                    <option value="">Select type</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="non-vegetarian">Non-Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Quantity *</label>
+                                <input type="text" class="form-control" name="quantity" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Expiry Date/Time *</label>
+                                <input type="datetime-local" class="form-control" 
+                                       name="expiry_time" id="expiry" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Pickup Location *</label>
+                            <input type="text" class="form-control" name="location" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description *</label>
+                            <textarea class="form-control" name="description" id="description" 
+                                rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Food Image (Optional)</label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I confirm the food is safe and stored properly.
+                            </label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Food Donation</button>
+                            <a href="{% url 'food_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Guidelines Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Donation Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <p>Only donate safe, freshly prepared or well-stored food.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .form-check-input:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Set minimum and default expiry time
+    const now = new Date();
+    const minDate = now.toISOString().slice(0, 16);
+    const expiryField = document.getElementById('expiry');
+
+    expiryField.min = minDate;
+
+    const defaultExpiry = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+    expiryField.value = defaultExpiry.toISOString().slice(0, 16);
+
+    // Character counter for description
+    const desc = document.getElementById('description');
+    const small = document.createElement('small');
+    small.className = 'form-text text-muted';
+    small.textContent = "0/500 characters";
+    desc.parentNode.appendChild(small);
+
+    desc.addEventListener('input', () => {
+        small.textContent = `${desc.value.length}/500 characters`;
+    });
+});
+</script>
+
+{% endblock %}

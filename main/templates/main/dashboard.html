@@ -1,0 +1,466 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Dashboard - FoodShare{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Welcome Header -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="card-title h2">Welcome back, {{ user.username }}! 👋</h1>
+                            <p class="card-text mb-0">
+                                Role: <strong>{{ user.profile.role|title }}</strong>
+                                {% if not user.profile.role %}
+                                <span class="badge bg-warning ms-2">Role not set</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <i class="fas fa-tachometer-alt fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0"><i class="fas fa-bars me-2"></i>Dashboard Menu</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-chart-line me-2"></i>Overview
+                    </a>
+
+                    {% if user.profile.role == 'donor' %}
+                    <a href="{% url 'add_food' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-plus-circle me-2"></i>Donate Food
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-utensils me-2"></i>My Donations
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-history me-2"></i>Donation History
+                    </a>
+                    {% elif user.profile.role == 'receiver' %}
+                    <a href="{% url 'food_list' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-search me-2"></i>Browse Food
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-hand-holding-heart me-2"></i>My Requests
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clock me-2"></i>Request History
+                    </a>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-users me-2"></i>Manage Users
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-boxes me-2"></i>Manage Donations
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-chart-bar me-2"></i>Analytics
+                    </a>
+                    {% endif %}
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-cog me-2"></i>Settings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0"><i class="fas fa-chart-pie me-2"></i>Quick Stats</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Total Donations:</span>
+                        <strong class="text-primary">12</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Completed:</span>
+                        <strong class="text-success">8</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Pending:</span>
+                        <strong class="text-warning">3</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>People Helped:</span>
+                        <strong class="text-info">45</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Donor Dashboard -->
+            {% if user.profile.role == 'donor' %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-utensils me-2"></i>My Recent Donations</h5>
+                            <a href="{% url 'add_food' %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>New Donation
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            {% if donations %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Food Item</th>
+                                            <th>Quantity</th>
+                                            <th>Status</th>
+                                            <th>Expires</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Sample data - replace with actual donations -->
+                                        <tr>
+                                            <td>
+                                                <strong>Vegetable Pizza</strong>
+                                                <br><small class="text-muted">Downtown Restaurant</small>
+                                            </td>
+                                            <td>12 servings</td>
+                                            <td><span class="badge bg-success">Available</span></td>
+                                            <td>3 hours</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                                <h5>No Donations Yet</h5>
+                                <p class="text-muted">You haven't donated any food yet. Start by making your first
+                                    donation!</p>
+                                <a href="{% url 'add_food' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Donate Food Now
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions for Donor -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-plus-circle fa-2x text-primary mb-3"></i>
+                            <h5>Add Donation</h5>
+                            <p class="text-muted">List new food items for donation</p>
+                            <a href="{% url 'add_food' %}" class="btn btn-primary w-100">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-history fa-2x text-info mb-3"></i>
+                            <h5>View History</h5>
+                            <p class="text-muted">Check your donation history</p>
+                            <button class="btn btn-outline-primary w-100">View History</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
+                            <h5>Impact Report</h5>
+                            <p class="text-muted">See your environmental impact</p>
+                            <button class="btn btn-outline-primary w-100">View Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receiver Dashboard -->
+            {% elif user.profile.role == 'receiver' %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-hand-holding-heart me-2"></i>My Recent Requests
+                            </h5>
+                            <a href="{% url 'food_list' %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-search me-1"></i>Browse Food
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            {% if requests %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Food Item</th>
+                                            <th>Quantity</th>
+                                            <th>Status</th>
+                                            <th>Request Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Sample data - replace with actual requests -->
+                                        <tr>
+                                            <td>
+                                                <strong>Fresh Sandwiches</strong>
+                                                <br><small class="text-muted">City Center Cafe</small>
+                                            </td>
+                                            <td>5 servings</td>
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td>2 hours ago</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-hand-holding-heart fa-3x text-muted mb-3"></i>
+                                <h5>No Requests Yet</h5>
+                                <p class="text-muted">You haven't made any food requests yet. Browse available food to
+                                    get started!</p>
+                                <a href="{% url 'food_list' %}" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>Browse Available Food
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions for Receiver -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-search fa-2x text-primary mb-3"></i>
+                            <h5>Browse Food</h5>
+                            <p class="text-muted">Find available food donations</p>
+                            <a href="{% url 'food_list' %}" class="btn btn-primary w-100">Browse Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-history fa-2x text-info mb-3"></i>
+                            <h5>Request History</h5>
+                            <p class="text-muted">View your past requests</p>
+                            <button class="btn btn-outline-primary w-100">View History</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-user-circle fa-2x text-success mb-3"></i>
+                            <h5>Profile Settings</h5>
+                            <p class="text-muted">Update your preferences</p>
+                            <button class="btn btn-outline-primary w-100">Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            {% elif user.is_staff %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-tachometer-alt me-2"></i>System Overview</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <div class="card text-white bg-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title">Total Donations</h5>
+                                                    <h2 class="mb-0">1,250</h2>
+                                                </div>
+                                                <i class="fas fa-utensils fa-2x opacity-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="card text-white bg-success">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title">Active Donors</h5>
+                                                    <h2 class="mb-0">150</h2>
+                                                </div>
+                                                <i class="fas fa-users fa-2x opacity-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="card text-white bg-info">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title">Receivers</h5>
+                                                    <h2 class="mb-0">85</h2>
+                                                </div>
+                                                <i class="fas fa-hand-holding-heart fa-2x opacity-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="card text-white bg-warning">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title">Pending</h5>
+                                                    <h2 class="mb-0">23</h2>
+                                                </div>
+                                                <i class="fas fa-clock fa-2x opacity-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Quick Actions -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                            <h5>Manage Users</h5>
+                            <p class="text-muted">View and manage all users</p>
+                            <button class="btn btn-primary w-100">Manage Users</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-boxes fa-2x text-success mb-3"></i>
+                            <h5>Manage Donations</h5>
+                            <p class="text-muted">Oversee all food donations</p>
+                            <button class="btn btn-primary w-100">Manage Donations</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-chart-bar fa-2x text-info mb-3"></i>
+                            <h5>Analytics</h5>
+                            <p class="text-muted">View system analytics</p>
+                            <button class="btn btn-primary w-100">View Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Role Set -->
+            {% else %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-user-cog fa-4x text-warning mb-4"></i>
+                            <h3>Role Not Set</h3>
+                            <p class="text-muted mb-4">
+                                Your account role hasn't been set yet. Please contact an administrator
+                                to assign you a role (Donor or Receiver) so you can start using the platform.
+                            </p>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Once your role is set, you'll be able to donate food or request food donations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Recent Activity Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-utensils text-success me-2"></i>
+                                        <strong>Vegetable Pizza</strong> was donated
+                                    </div>
+                                    <span class="badge bg-success">Completed</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-bread-slice text-warning me-2"></i>
+                                        <strong>Fresh Sandwiches</strong> is pending pickup
+                                    </div>
+                                    <span class="badge bg-warning">Pending</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-salad text-primary me-2"></i>
+                                        <strong>Salad Platters</strong> was requested
+                                    </div>
+                                    <span class="badge bg-primary">New</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

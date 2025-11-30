@@ -1,0 +1,377 @@
+{% extends 'main/base.html' %}
+
+{% block title %}About Us - FoodShare{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold mb-4">About FoodShare</h1>
+            <p class="lead">Connecting surplus food with communities in need</p>
+        </div>
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="row mb-5">
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-bullseye fa-3x text-primary mb-4"></i>
+                    <h3 class="card-title">Our Mission</h3>
+                    <p class="card-text">
+                        To reduce food waste and fight hunger by creating a seamless connection 
+                        between food donors and receivers, ensuring that surplus food reaches 
+                        those who need it most while promoting environmental sustainability.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-eye fa-3x text-primary mb-4"></i>
+                    <h3 class="card-title">Our Vision</h3>
+                    <p class="card-text">
+                        A world where no edible food goes to waste and every community 
+                        has access to nutritious meals, creating sustainable and 
+                        food-secure communities for future generations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Problem Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="section-title">The Problem We Solve</h2>
+                            <p class="lead">Food waste is a global crisis with local solutions.</p>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-trash text-danger fa-2x me-3"></i>
+                                        <div>
+                                            <h5>1.3 Billion Tons</h5>
+                                            <p class="text-muted mb-0">of food wasted annually worldwide</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-utensils text-warning fa-2x me-3"></i>
+                                        <div>
+                                            <h5>Restaurants & Events</h5>
+                                            <p class="text-muted mb-0">often have surplus food that goes to waste</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-hands-helping text-success fa-2x me-3"></i>
+                                        <div>
+                                            <h5>Millions Go Hungry</h5>
+                                            <p class="text-muted mb-0">while edible food is discarded</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-globe text-info fa-2x me-3"></i>
+                                        <div>
+                                            <h5>Environmental Impact</h5>
+                                            <p class="text-muted mb-0">Food waste contributes to climate change</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="fas fa-recycle fa-6x text-primary opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="section-title text-center mb-5">How FoodShare Works</h2>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
+                         style="width: 100px; height: 100px;">
+                        <i class="fas fa-utensils fa-3x text-white"></i>
+                    </div>
+                    <h4>1. Donate Food</h4>
+                    <p>Restaurants, catering services, events, and households can easily list their surplus food with details about type, quantity, allergens, and pickup location.</p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Simple listing process</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Food safety guidelines</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Flexible pickup times</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
+                         style="width: 100px; height: 100px;">
+                        <i class="fas fa-hand-holding-heart fa-3x text-white"></i>
+                    </div>
+                    <h4>2. Connect & Request</h4>
+                    <p>Registered NGOs, charities, shelters, and individuals in need can browse available food donations and submit requests based on their requirements.</p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Real-time availability</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Location-based matching</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Secure communication</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="bg-info rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
+                         style="width: 100px; height: 100px;">
+                        <i class="fas fa-truck fa-3x text-white"></i>
+                    </div>
+                    <h4>3. Collect & Distribute</h4>
+                    <p>Receivers collect the food directly from donors at scheduled times, ensuring fresh food reaches those who need it while reducing environmental impact.</p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Scheduled pickups</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Quality assurance</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Impact tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Impact Statistics -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center py-5">
+                    <h2 class="mb-5">Our Impact in Numbers</h2>
+                    <div class="row">
+                        <div class="col-md-3 mb-4">
+                            <div class="display-3 fw-bold">1,250+</div>
+                            <p>Meals Donated</p>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="display-3 fw-bold">150+</div>
+                            <p>Active Donors</p>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="display-3 fw-bold">85+</div>
+                            <p>Receiving Organizations</p>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="display-3 fw-bold">500+</div>
+                            <p>People Helped</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <small class="opacity-75">...and growing every day!</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Values Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="section-title text-center mb-5">Our Values</h2>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-recycle fa-2x text-success me-4 mt-1"></i>
+                        <div>
+                            <h4>Sustainability</h4>
+                            <p>We believe in creating sustainable solutions to food waste that benefit both the environment and communities. Every meal saved reduces greenhouse gas emissions and conserves resources.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-heart fa-2x text-danger me-4 mt-1"></i>
+                        <div>
+                            <h4>Compassion</h4>
+                            <p>Building strong community connections is at the heart of everything we do. We treat every donor, receiver, and volunteer with respect and empathy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-shield-alt fa-2x text-warning me-4 mt-1"></i>
+                        <div>
+                            <h4>Safety First</h4>
+                            <p>Food safety is our top priority. We ensure all donations meet safety standards and provide clear guidelines for proper food handling and storage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-handshake fa-2x text-info me-4 mt-1"></i>
+                        <div>
+                            <h4>Collaboration</h4>
+                            <p>We work together with donors, receivers, and community partners to maximize our impact. Together, we can achieve what none of us can do alone.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section (Optional) -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="section-title text-center mb-5">Join Our Community</h2>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-utensils fa-3x text-primary mb-3"></i>
+                    <h4>Food Donors</h4>
+                    <p>Restaurants, caterers, events, and households with surplus food can make a difference in their community.</p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Reduce food waste</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Tax benefits</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Community engagement</li>
+                    </ul>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-primary mt-3">Become a Donor</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-hand-holding-heart fa-3x text-success mb-3"></i>
+                    <h4>Food Receivers</h4>
+                    <p>NGOs, charities, shelters, and individuals in need can access fresh, nutritious food for their communities.</p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Access to free food</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Reduce operational costs</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Serve more people</li>
+                    </ul>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-success mt-3">Join as Receiver</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-hands-helping fa-3x text-info mb-3"></i>
+                    <h4>Volunteers & Partners</h4>
+                    <p>Join us as a volunteer or partner organization to help scale our impact and reach more communities.</p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Make a difference</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Build connections</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Gain experience</li>
+                    </ul>
+                    <button class="btn btn-info mt-3">Get Involved</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <h2 class="mb-4">Get In Touch</h2>
+                    <p class="lead mb-4">Want to partner with us, volunteer, or have questions? We'd love to hear from you.</p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+                                    <h5>Email Us</h5>
+                                    <p class="text-muted">info@foodshare.org</p>
+                                    <small class="text-muted">General inquiries</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-phone fa-2x text-primary mb-3"></i>
+                                    <h5>Call Us</h5>
+                                    <p class="text-muted">+1 (555) 123-4567</p>
+                                    <small class="text-muted">Mon-Fri, 9AM-5PM</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-map-marker-alt fa-2x text-primary mb-3"></i>
+                                    <h5>Visit Us</h5>
+                                    <p class="text-muted">123 Food Drive<br>City, State 12345</p>
+                                    <small class="text-muted">By appointment</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h5>Follow Our Journey</h5>
+                        <div class="d-flex justify-content-center gap-3 mt-3">
+                            <a href="#" class="text-primary fs-4"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-primary fs-4"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-primary fs-4"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-primary fs-4"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .display-3 {
+        font-size: 3.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .display-3 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}

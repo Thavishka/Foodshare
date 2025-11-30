@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - FoodShare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #28a745;
+            --primary-light: #34ce57;
+            --primary-dark: #218838;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 60px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .register-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .register-header h1 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .register-form {
+            padding: 2rem;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .register-links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-right: none;
+            width: 50px;
+            justify-content: center;
+        }
+
+        .input-group .form-control {
+            border-left: none;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .role-cards {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .role-card {
+            flex: 1;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-card:hover {
+            border-color: var(--primary);
+        }
+
+        .role-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .role-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+        }
+
+        .password-requirements {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .requirement.valid {
+            color: var(--primary);
+        }
+
+        .requirement.invalid {
+            color: #6c757d;
+        }
+
+        .requirement i {
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Simple Navigation -->
+    <nav class="navbar navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-leaf me-2"></i>FoodShare
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Register Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="register-container">
+                    <div class="register-header">
+                        <h1><i class="fas fa-user-plus me-2"></i>Register</h1>
+                        <p class="mb-0">Join FoodShare today</p>
+                    </div>
+
+                    <div class="register-form">
+                        <!-- Display Form Errors -->
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Please correct the errors below:</strong>
+                            <ul class="mb-0 mt-2">
+                                {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                <li>
+                                    {% if field == 'password2' %}
+                                    Password: {{ error }}
+                                    {% else %}
+                                    {{ field|title }}: {{ error }}
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Registration Form -->
+                        <form method="POST" id="registrationForm">
+                            {% csrf_token %}
+
+                            <!-- First Name -->
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input type="text"
+                                        class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                                        id="first_name" name="first_name" placeholder="Enter your first name" required
+                                        value="{{ form.first_name.value|default:'' }}">
+                                </div>
+                                {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.first_name.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input type="text"
+                                        class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
+                                        id="last_name" name="last_name" placeholder="Enter your last name" required
+                                        value="{{ form.last_name.value|default:'' }}">
+                                </div>
+                                {% if form.last_name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.last_name.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-at"></i>
+                                    </span>
+                                    <input type="text"
+                                        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                        id="username" name="username" placeholder="Choose a username" required
+                                        maxlength="150" value="{{ form.username.value|default:'' }}">
+                                </div>
+                                {% if form.username.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.username.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email"
+                                        class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="email"
+                                        name="email" placeholder="Enter your email" required
+                                        value="{{ form.email.value|default:'' }}">
+                                </div>
+                                {% if form.email.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.email.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <input type="text"
+                                        class="form-control {% if form.phone.errors %}is-invalid{% endif %}" id="phone"
+                                        name="phone" placeholder="Enter your phone number" required
+                                        value="{{ form.phone.value|default:'' }}">
+                                </div>
+                                {% if form.phone.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.phone.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+
+                            <!-- Role Selection -->
+                            <div class="mb-3">
+                                <label class="form-label">I want to:</label>
+                                <div class="role-cards">
+                                    <div class="role-card" onclick="selectRole('donor')">
+                                        <i class="fas fa-utensils"></i>
+                                        <h6>Donate Food</h6>
+                                        <small class="text-muted">I have surplus food to share</small>
+                                        <input type="radio" name="role" value="donor" id="role_donor"
+                                            style="display: none;" required>
+                                    </div>
+                                    <div class="role-card" onclick="selectRole('receiver')">
+                                        <i class="fas fa-hand-holding-heart"></i>
+                                        <h6>Receive Food</h6>
+                                        <small class="text-muted">I need food donations</small>
+                                        <input type="radio" name="role" value="receiver" id="role_receiver"
+                                            style="display: none;">
+                                    </div>
+                                </div>
+                                {% if form.role.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.role.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label for="password1" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password"
+                                        class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                                        id="password1" name="password1" placeholder="Create a password" required
+                                        oninput="validatePassword()">
+                                </div>
+                                {% if form.password1.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.password1.errors.0 }}
+                                </div>
+                                {% endif %}
+
+                                <!-- Password Requirements -->
+                                <div class="password-requirements">
+                                    <div class="requirement invalid" id="req-length">
+                                        <i class="fas fa-circle"></i>
+                                        At least 8 characters
+                                    </div>
+                                    <div class="requirement invalid" id="req-letter">
+                                        <i class="fas fa-circle"></i>
+                                        Contains letters
+                                    </div>
+                                    <div class="requirement invalid" id="req-number">
+                                        <i class="fas fa-circle"></i>
+                                        Contains numbers
+                                    </div>
+                                    <div class="requirement invalid" id="req-special">
+                                        <i class="fas fa-circle"></i>
+                                        Not too common
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="mb-3">
+                                <label for="password2" class="form-label">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password"
+                                        class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                                        id="password2" name="password2" placeholder="Confirm your password" required
+                                        oninput="checkPasswordMatch()">
+                                </div>
+                                {% if form.password2.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.password2.errors.0 }}
+                                </div>
+                                {% endif %}
+                                <div class="text-danger small mt-1" id="password-match-error" style="display: none;">
+                                    <i class="fas fa-exclamation-circle"></i> Passwords do not match
+                                </div>
+                            </div>
+
+                            <!-- Terms Agreement -->
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#"
+                                        class="text-primary">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+
+                            <!-- Login Link -->
+                            <div class="register-links">
+                                <p class="mb-0">Already have an account?
+                                    <a href="{% url 'login' %}" class="text-primary text-decoration-none fw-bold">Login
+                                        here</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+
+    <script>
+        function selectRole(role) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+
+            // Set the radio button value
+            document.getElementById('role_' + role).checked = true;
+        }
+
+        // Auto-select role if form was submitted with errors
+        document.addEventListener('DOMContentLoaded', function () {
+            const roleValue = "{{ form.role.value|default:'' }}";
+            if (roleValue) {
+                selectRole(roleValue);
+            }
+        });
+
+        function validatePassword() {
+            const password = document.getElementById('password1').value;
+
+            // Check length
+            const lengthReq = document.getElementById('req-length');
+            if (password.length >= 8) {
+                lengthReq.classList.remove('invalid');
+                lengthReq.classList.add('valid');
+                lengthReq.innerHTML = '<i class="fas fa-check-circle"></i> At least 8 characters';
+            } else {
+                lengthReq.classList.remove('valid');
+                lengthReq.classList.add('invalid');
+                lengthReq.innerHTML = '<i class="fas fa-circle"></i> At least 8 characters';
+            }
+
+            // Check for letters
+            const letterReq = document.getElementById('req-letter');
+            if (/[a-zA-Z]/.test(password)) {
+                letterReq.classList.remove('invalid');
+                letterReq.classList.add('valid');
+                letterReq.innerHTML = '<i class="fas fa-check-circle"></i> Contains letters';
+            } else {
+                letterReq.classList.remove('valid');
+                letterReq.classList.add('invalid');
+                letterReq.innerHTML = '<i class="fas fa-circle"></i> Contains letters';
+            }
+
+            // Check for numbers
+            const numberReq = document.getElementById('req-number');
+            if (/[0-9]/.test(password)) {
+                numberReq.classList.remove('invalid');
+                numberReq.classList.add('valid');
+                numberReq.innerHTML = '<i class="fas fa-check-circle"></i> Contains numbers';
+            } else {
+                numberReq.classList.remove('valid');
+                numberReq.classList.add('invalid');
+                numberReq.innerHTML = '<i class="fas fa-circle"></i> Contains numbers';
+            }
+
+            // Check if not too common (simplified check)
+            const commonReq = document.getElementById('req-special');
+            const commonPasswords = ['password', '123456', 'qwerty', 'letmein'];
+            if (!commonPasswords.includes(password.toLowerCase()) && password.length > 0) {
+                commonReq.classList.remove('invalid');
+                commonReq.classList.add('valid');
+                commonReq.innerHTML = '<i class="fas fa-check-circle"></i> Not too common';
+            } else {
+                commonReq.classList.remove('valid');
+                commonReq.classList.add('invalid');
+                commonReq.innerHTML = '<i class="fas fa-circle"></i> Not too common';
+            }
+        }
+
+        function checkPasswordMatch() {
+            const password1 = document.getElementById('password1').value;
+            const password2 = document.getElementById('password2').value;
+            const matchError = document.getElementById('password-match-error');
+
+            if (password2 && password1 !== password2) {
+                matchError.style.display = 'block';
+            } else {
+                matchError.style.display = 'none';
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
