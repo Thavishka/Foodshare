@@ -142,11 +142,15 @@
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 food-card" data-type="{{ food.food_type }}" data-id="{{ food.id }}"
                 data-expiry="{{ food.expiry_time }}">
-                {% if food.image %}
-                <img src="{{ food.image.url }}" alt="{{ food.name }}">
+                {% if food.images.all %}
+                {% for img in food.images.all %}
+                <img src="{{ img.image.url }}" alt="{{ food.name }}">
+                {% break %}
+                {% endfor %}
                 {% else %}
                 <img src="https://via.placeholder.com/500x300?text=No+Image" alt="No Image">
                 {% endif %}
+
 
                 <span class="badge bg-success position-absolute top-0 end-0 m-3">
                     {{ food.status|title }}
@@ -202,59 +206,59 @@
 {% block extra_js %}
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('search');
-    const foodTypeFilter = document.getElementById('foodType');
-    const sortBy = document.getElementById('sortBy');
-    const container = document.getElementById('foodList');
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search');
+        const foodTypeFilter = document.getElementById('foodType');
+        const sortBy = document.getElementById('sortBy');
+        const container = document.getElementById('foodList');
 
-    function filterAndSortFood() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const foodType = foodTypeFilter.value.toLowerCase();
+        function filterAndSortFood() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const foodType = foodTypeFilter.value.toLowerCase();
 
-        // Filter cards
-        const allItems = Array.from(container.querySelectorAll('.col-md-6.col-lg-4'));
-        allItems.forEach(item => {
-            const card = item.querySelector('.food-card');
-            const title = card.querySelector('.card-title').textContent.toLowerCase();
-            const location = card.querySelector('.card-text').textContent.toLowerCase();
-            const type = card.dataset.type ? card.dataset.type.toLowerCase() : '';
+            // Filter cards
+            const allItems = Array.from(container.querySelectorAll('.col-md-6.col-lg-4'));
+            allItems.forEach(item => {
+                const card = item.querySelector('.food-card');
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const location = card.querySelector('.card-text').textContent.toLowerCase();
+                const type = card.dataset.type ? card.dataset.type.toLowerCase() : '';
 
-            const matchesSearch = title.includes(searchTerm) || location.includes(searchTerm);
-            const matchesType = !foodType || type === foodType;
+                const matchesSearch = title.includes(searchTerm) || location.includes(searchTerm);
+                const matchesType = !foodType || type === foodType;
 
-            item.style.display = (matchesSearch && matchesType) ? 'block' : 'none';
-        });
+                item.style.display = (matchesSearch && matchesType) ? 'block' : 'none';
+            });
 
-        // Sort only visible cards
-        const visibleItems = allItems.filter(item => item.style.display !== 'none');
-        const value = sortBy.value;
+            // Sort only visible cards
+            const visibleItems = allItems.filter(item => item.style.display !== 'none');
+            const value = sortBy.value;
 
-        visibleItems.sort((a, b) => {
-            const cardA = a.querySelector('.food-card');
-            const cardB = b.querySelector('.food-card');
+            visibleItems.sort((a, b) => {
+                const cardA = a.querySelector('.food-card');
+                const cardB = b.querySelector('.food-card');
 
-            if (value === 'newest') {
-                return Number(cardB.dataset.id) - Number(cardA.dataset.id);
-            }
+                if (value === 'newest') {
+                    return Number(cardB.dataset.id) - Number(cardA.dataset.id);
+                }
 
-            if (value === 'expiring') {
-                const timeA = new Date(cardA.dataset.expiry);
-                const timeB = new Date(cardB.dataset.expiry);
-                return timeA - timeB;
-            }
+                if (value === 'expiring') {
+                    const timeA = new Date(cardA.dataset.expiry);
+                    const timeB = new Date(cardB.dataset.expiry);
+                    return timeA - timeB;
+                }
 
-            return 0;
-        });
+                return 0;
+            });
 
-        // Re-attach sorted items
-        visibleItems.forEach(item => container.appendChild(item));
-    }
+            // Re-attach sorted items
+            visibleItems.forEach(item => container.appendChild(item));
+        }
 
-    searchInput.addEventListener('input', filterAndSortFood);
-    foodTypeFilter.addEventListener('change', filterAndSortFood);
-    sortBy.addEventListener('change', filterAndSortFood);
-});
+        searchInput.addEventListener('input', filterAndSortFood);
+        foodTypeFilter.addEventListener('change', filterAndSortFood);
+        sortBy.addEventListener('change', filterAndSortFood);
+    });
 </script>
 
 {% endblock %}
