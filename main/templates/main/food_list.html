@@ -142,14 +142,15 @@
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 food-card" data-type="{{ food.food_type }}" data-id="{{ food.id }}"
                 data-expiry="{{ food.expiry_time }}">
-                {% if food.images.all %}
-                {% for img in food.images.all %}
-                <img src="{{ img.image.url }}" alt="{{ food.name }}">
-                {% break %}
-                {% endfor %}
+                {% if food.images.exists %}
+                {% with food.images.first as img %}
+                <img src="{{ img.image.url }}" alt="{{ food.name }}"
+                    style="width:100%; height:200px; object-fit:cover;">
+                {% endwith %}
                 {% else %}
                 <img src="https://via.placeholder.com/500x300?text=No+Image" alt="No Image">
                 {% endif %}
+
 
 
                 <span class="badge bg-success position-absolute top-0 end-0 m-3">
